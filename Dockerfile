@@ -1,7 +1,7 @@
 # Base image
 FROM ubuntu:22.04
 
-# Instalace potřebných nástrojů a knihoven
+# Závislosti
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
@@ -18,22 +18,18 @@ RUN apt-get update && \
         zlib1g-dev \
         && rm -rf /var/lib/apt/lists/*
 
-# Pracovní složka
 WORKDIR /app
-
-# Zkopíruj celý repozitář
 COPY . /app
 
 # Build SRB2
 RUN make -C src
 
-# Port, kam se připojují hráči
 EXPOSE 5029/udp
 
-# Environment variables pro mapu a max hráčů
+# Environment Variables (nastaví se v Coolify)
 ENV SRB2_MAP=1
 ENV SRB2_MAXPLAYERS=8
 ENV SRB2_PORT=5029
 
-# CMD - automaticky najde spustitelný soubor
-CMD ["bash", "-c", "exec $(find ./src -type f -executable -name 'srb2*') +map $SRB2_MAP +maxplayers $SRB2_MAXPLAYERS +port $SRB2_PORT"]
+# Spuštění serveru
+CMD ["./src/srb2server", "+map", "${SRB2_MAP}", "+maxplayers", "${SRB2_MAXPLAYERS}", "+port", "${SRB2_PORT}"]
