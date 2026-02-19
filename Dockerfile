@@ -10,8 +10,7 @@ RUN apt update && apt install -y \
     libgme-dev \
     libopenmpt-dev \
     zlib1g-dev \
-    wget \
-    unzip
+    wget
 
 WORKDIR /app
 
@@ -19,8 +18,8 @@ COPY . .
 
 RUN make -C src -j$(nproc)
 
-# stáhne oficiální data
-RUN wget https://github.com/STJr/SRB2/releases/latest/download/srb2.pk3
+# stáhne oficiální pk3 přímo z oficiálního serveru
+RUN wget https://www.srb2.org/download/files/2.2.15/srb2.pk3
 
 RUN mkdir -p bin
 RUN mv srb2.pk3 bin/
