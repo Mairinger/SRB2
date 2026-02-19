@@ -36,4 +36,4 @@ ENV SRB2_MAXPLAYERS=8
 ENV SRB2_PORT=5029
 
 # CMD - automaticky najde spustitelný soubor
-CMD ["bash", "-c", "exec $(find ./src -type f -executable -name 'srb2*') server +map $SRB2_MAP +maxplayers $SRB2_MAXPLAYERS +port $SRB2_PORT"]
+CMD ["bash", "-c", "exec $(find ./src -type f -executable -name 'srb2*') +map $SRB2_MAP +maxplayers $SRB2_MAXPLAYERS +port $SRB2_PORT"]
