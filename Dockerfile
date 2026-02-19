@@ -1,35 +1,42 @@
+# Dockerfile for SRB2 server
+
 # Base image
 FROM ubuntu:22.04
 
-# Závislosti
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SRB2_MAP=MAP01
+ENV SRB2_MAXPLAYERS=8
+ENV SRB2_PORT=5029
+
+# Install dependencies
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
         libsdl2-dev \
         libsdl2-mixer-dev \
-        git \
-        wget \
+        libpng-dev \
+        libcurl4-openssl-dev \
         libminiupnpc-dev \
         libgme-dev \
         libopenmpt-dev \
-        libpng-dev \
-        libcurl4-openssl-dev \
         pkg-config \
-        zlib1g-dev \
-        && rm -rf /var/lib/apt/lists/*
+        wget \
+        git \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /app
+
+# Copy all files
 COPY . /app
 
-# Build SRB2
+# Build the server
 RUN make -C src
 
+# Expose UDP port
 EXPOSE 5029/udp
 
-# Environment Variables (nastaví se v Coolify)
-ENV SRB2_MAP=1
-ENV SRB2_MAXPLAYERS=8
-ENV SRB2_PORT=5029
-
-# Spuštění serveru
-CMD ["bash", "-c", "ls -l src && find src -type f -executable"]
+# Start the server
+CMD ["./src/srb2", "+map", "${SRB2_MAP}", "+maxplayers", "${SRB2_MAXPLAYERS}", "+port", "${SRB2_PORT}"]
