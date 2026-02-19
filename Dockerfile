@@ -32,4 +32,4 @@ ENV SRB2_MAXPLAYERS=8
 ENV SRB2_PORT=5029
 
 # Spuštění serveru
-CMD ["./src/srb2server", "+map", "${SRB2_MAP}", "+maxplayers", "${SRB2_MAXPLAYERS}", "+port", "${SRB2_PORT}"]
+CMD ["bash", "-c", "ls -l src && find src -type f -executable"]
